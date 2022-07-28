@@ -11,16 +11,21 @@ resource "random_string" "myrandom" {
   number = false   
 }
 
+/*
 # Create Resource Group
 resource "azurerm_resource_group" "resource_group" {
   name     = var.resource_group_name
   location = var.location
 }
+*/
+data "azurerm_resource_group" "existing" {
+  name = "rg-Novartis"
+}
 
 # Create Azure Storage account
 resource "azurerm_storage_account" "storage_account" {
   name                = "${var.storage_account_name}${random_string.myrandom.id}"
-  resource_group_name = azurerm_resource_group.resource_group.name
+  resource_group_name = azurerm_resource_group.existing.name
  
   location                 = var.location
   account_tier             = var.storage_account_tier
